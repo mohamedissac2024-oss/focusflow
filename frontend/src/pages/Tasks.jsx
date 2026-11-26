@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import api from '../services/api';
 import projectService from '../services/projectService';
+import AppHeader from "../components/layout/AppHeader";
 
 const getTodayISO = () => {
   const now = new Date();
@@ -305,6 +306,8 @@ export default function Tasks() {
   };
 
   return (
+    <>
+     <AppHeader />
     <div className="p-6 bg-[#0B0B12] min-h-screen text-white">
       {/* Top Header + Tabs */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-[#2A2A3D]">
@@ -573,7 +576,10 @@ export default function Tasks() {
             allCompleted.map((t) => renderTaskCard(t, 'done'))
           )}
         </div>
+        
       )}
+      
     </div>
+     </>
   );
 }

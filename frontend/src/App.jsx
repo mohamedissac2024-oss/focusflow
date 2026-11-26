@@ -11,6 +11,8 @@ import Notes from "./pages/Notes";
 import GitHubActivity from "./pages/GitHubActivity";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+import ForgotPassword from "./pages/ForgotPassword";
+import ChangePassword from "./pages/ChangePassword";
 
 export default function App() {
   return (
@@ -28,6 +30,9 @@ export default function App() {
           <Route path="/github-activity" element={<ProtectedRoute><GitHubActivity /></ProtectedRoute>} />
           <Route path="/githubActivity" element={<ProtectedRoute><GitHubActivity /></ProtectedRoute>} />
           <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ForgotPassword />} />
+          <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

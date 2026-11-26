@@ -1,4 +1,3 @@
-
 import api from './api';
 
 const authService = {
@@ -35,3 +34,12 @@ export default authService;
 
 // named exports too, so "import * as authService" works as well as the default import
 export const { register, login, logout, getCurrentUser } = authService;
+
+export const changePassword = (payload) =>
+    api.post("/change-password", payload);
+
+export const forgotPassword = (email) =>
+    api.post("/forgot-password", { email });
+
+export const resetPassword = (payload) =>
+    api.post("/reset-password", payload);

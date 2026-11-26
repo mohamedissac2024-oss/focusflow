@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import api from '../services/api';
 import projectService from '../services/projectService';
+import AppHeader from "../components/layout/AppHeader"
 
 const COLUMNS = [
   { id: 'todo', label: 'To Do', countStyle: 'bg-[#232336] text-slate-300' },
@@ -155,6 +156,9 @@ export default function Projects() {
   };
 
   return (
+    <>
+    <AppHeader />
+
     <div className="p-6 bg-[#0B0B12] min-h-screen text-white">
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -595,5 +599,6 @@ export default function Projects() {
         </div>
       )}
     </div>
+      </>
   );
 }

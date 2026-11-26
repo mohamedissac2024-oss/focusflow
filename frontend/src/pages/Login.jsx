@@ -34,6 +34,12 @@ export default function Login() {
         {error && <p role="alert" className="mb-4 rounded bg-red-500/10 p-3 text-sm text-red-400">{error}</p>}
         <Input label="Email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" />
         <Input label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+     <Link
+  to="/forgot-password"
+  className="text-[#22D3EE] text-sm font-semibold hover:text-white hover:underline transition-colors"
+>
+  Forgot Password?
+</Link>
         <Button type="submit" disabled={submitting}>{submitting ? "Logging in..." : "Login"}</Button>
         <p className="text-[#9CA3AF] text-sm mt-4">
           No account? <Link to="/register" className="text-[#22D3EE] hover:underline">Register</Link>

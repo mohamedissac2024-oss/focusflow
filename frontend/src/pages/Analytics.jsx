@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import AppHeader from "../components/layout/AppHeader";
 
 export default function Analytics() {
   const [summary, setSummary] = useState(null);
@@ -49,6 +50,8 @@ export default function Analytics() {
   const maxTasks = Math.max(...dailyBars.map((d) => d.tasks_completed || 0), 1);
 
   return (
+     <>
+         <AppHeader />
     <div className="p-6 bg-[#0B0B12] min-h-screen text-white">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -278,5 +281,6 @@ export default function Analytics() {
         </>
       )}
     </div>
+    </>
   );
 }

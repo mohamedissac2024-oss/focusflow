@@ -27,6 +27,7 @@ export default function AppHeader({ children, bottomSpace = 56 }) {
   const shownName = user?.name || user?.username || user?.email?.split("@")[0];
 
   return (
+    
     <header style={{ background: "#111", color: "white" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", minHeight: 56, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 32, flexWrap: "wrap" }}>
@@ -86,3 +87,5 @@ export default function AppHeader({ children, bottomSpace = 56 }) {
     </header>
   );
 }
+
+
