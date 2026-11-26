@@ -1,7 +1,14 @@
 // frontend/src/services/githubService.js
 import axios from "axios";
 
-const API_BASE = `http://${window.location.hostname}:5000/api/github`;
+let API_BASE = `http://${window.location.hostname}:5000/api/github`;
+API_BASE = `${(
+  import.meta.env.VITE_API_URL ||
+  "https://focusflow-backend-nuh9.onrender.com/api"
+)
+  .trim()
+  .replace(/\/+$/, "")
+  .replace(/\/api$/, "")}/api/github`;
 
 const githubClient = axios.create({
   baseURL: API_BASE,
