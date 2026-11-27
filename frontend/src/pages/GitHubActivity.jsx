@@ -134,11 +134,14 @@ export default function GitHubActivity() {
     <div style={{ minHeight: "100vh", background: "#F4F4F0", color: "#111", fontFamily: "Arial, sans-serif", margin: 0 }}>
       {/* TOP NAV */}
       <header style={{ background: "#111", color: "white" }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-            <Link to="/dashboard" style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: "bold", fontSize: "14px", color: "white", textDecoration: "none" }}>
-              <span style={{ width: "10px", height: "10px", background: "#C6F24E", display: "inline-block" }} />
-              FocusFlow
+        <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 24px", minHeight: "88px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "32px", flexWrap: "wrap" }}>
+            <Link to="/dashboard" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+              <img
+                src="/Focus%20flow.jpg.jpeg?v=3"
+                alt="FocusFlow"
+                style={{ height: "76px", width: "auto", objectFit: "contain", mixBlendMode: "lighten" }}
+              />
             </Link>
             <nav style={{ display: "flex", gap: "24px", fontSize: "12px" }}>
               <Link to="/dashboard" style={{ color: "#a1a1aa", textDecoration: "none" }}>Overview</Link>

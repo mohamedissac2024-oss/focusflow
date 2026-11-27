@@ -1,10 +1,6 @@
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
-/**
- * Returns { theme, isDark, setTheme, toggleTheme }.
- * Must be used inside <ThemeProvider>.
- */
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (!context) {

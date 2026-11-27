@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import * as taskService from "../services/taskService";
 
-
-/** Date -> "YYYY-MM-DD" in the user's local time */
 export const toDateKey = (date) => {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -10,13 +8,11 @@ export const toDateKey = (date) => {
   return `${y}-${m}-${d}`;
 };
 
-/** "YYYY-MM-DD" -> Date at local midnight */
 export const parseDateKey = (key) => {
   const [y, m, d] = key.split("-").map(Number);
   return new Date(y, m - 1, d);
 };
 
-// "2026-11-10" stays as is; a full timestamp becomes the local date.
 const toKey = (value) => {
   if (!value) return null;
   const text = String(value);
@@ -24,8 +20,6 @@ const toKey = (value) => {
   const date = new Date(text);
   return Number.isNaN(date.getTime()) ? null : toDateKey(date);
 };
-
-/* ---------- normalise whatever Flask sends ---------- */
 
 const PRIORITY_RANK = { high: 0, medium: 1, low: 2 };
 
@@ -41,7 +35,7 @@ function normalizeTask(raw) {
   const completedValue =
     raw.completed_at ??
     raw.completedAt ??
-    (status === "done" ? raw.updated_at ?? raw.updatedAt : null);
+    (status === "done" ? (raw.updated_at ?? raw.updatedAt) : null);
 
   return {
     ...raw,
@@ -53,15 +47,13 @@ function normalizeTask(raw) {
   };
 }
 
-const unwrapList = (data) => (Array.isArray(data) ? data : data?.tasks ?? []);
+const unwrapList = (data) => (Array.isArray(data) ? data : (data?.tasks ?? []));
 
 const toMessage = (err) =>
   err?.response?.data?.error ||
   err?.response?.data?.message ||
   err?.message ||
   "Something went wrong. Please try again.";
-
-/* ---------- the hook ---------- */
 
 export function useTasks({ autoLoad = true } = {}) {
   const [tasks, setTasks] = useState([]);
@@ -85,8 +77,6 @@ export function useTasks({ autoLoad = true } = {}) {
     if (autoLoad) loadTasks();
   }, [autoLoad, loadTasks]);
 
-
-  // The create / edit / remove functions throw on failure so a form can show the error.
   const addTask = useCallback(async (payload) => {
     const data = await taskService.createTask(payload);
     const task = normalizeTask(data?.task ?? data);
@@ -101,8 +91,8 @@ export function useTasks({ autoLoad = true } = {}) {
       prev.map((t) =>
         t.id === id
           ? normalizeTask(fromServer?.id ? fromServer : { ...t, ...changes })
-          : t
-      )
+          : t,
+      ),
     );
   }, []);
 
@@ -111,7 +101,6 @@ export function useTasks({ autoLoad = true } = {}) {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   }, []);
 
-  // Used by the dashboard checkbox. Errors go into `error` instead of throwing.
   const toggleComplete = useCallback(
     async (task) => {
       try {
@@ -122,10 +111,9 @@ export function useTasks({ autoLoad = true } = {}) {
         setError(toMessage(err));
       }
     },
-    [editTask]
+    [editTask],
   );
 
-  /* ---------- numbers for the dashboard ---------- */
   const derived = useMemo(() => {
     const now = new Date();
     const todayKey = toDateKey(now);
@@ -133,13 +121,12 @@ export function useTasks({ autoLoad = true } = {}) {
 
     const dueToday = tasks.filter((t) => t.dueDate === todayKey);
     const overdueTasks = tasks.filter(
-      (t) => isOpen(t) && t.dueDate && t.dueDate < todayKey
+      (t) => isOpen(t) && t.dueDate && t.dueDate < todayKey,
     );
     const doneToday = tasks.filter(
-      (t) => t.status === "done" && t.completedDate === todayKey
+      (t) => t.status === "done" && t.completedDate === todayKey,
     );
 
-    // Completed-per-day counts for the last 14 days (7 this week + 7 before)
     const counts = {};
     tasks.forEach((t) => {
       if (t.status === "done" && t.completedDate) {
@@ -147,9 +134,12 @@ export function useTasks({ autoLoad = true } = {}) {
       }
     });
     const lastDays = Array.from({ length: 14 }, (_, i) =>
-      toDateKey(new Date(now.getFullYear(), now.getMonth(), now.getDate() - (13 - i)))
+      toDateKey(
+        new Date(now.getFullYear(), now.getMonth(), now.getDate() - (13 - i)),
+      ),
     );
-    const sum = (keys) => keys.reduce((total, k) => total + (counts[k] || 0), 0);
+    const sum = (keys) =>
+      keys.reduce((total, k) => total + (counts[k] || 0), 0);
 
     const weeklyActivity = lastDays.slice(7).map((key) => ({
       date: key,
@@ -157,14 +147,12 @@ export function useTasks({ autoLoad = true } = {}) {
       count: counts[key] || 0,
     }));
 
-    // "Your priorities today": due today, overdue, or finished today.
-    // Open tasks first, then high -> low priority, then earliest due date.
     const priorityTasks = tasks
       .filter(
         (t) =>
           t.dueDate === todayKey ||
           (isOpen(t) && t.dueDate && t.dueDate < todayKey) ||
-          (t.status === "done" && t.completedDate === todayKey)
+          (t.status === "done" && t.completedDate === todayKey),
       )
       .sort((a, b) => {
         if (isOpen(a) !== isOpen(b)) return isOpen(a) ? -1 : 1;

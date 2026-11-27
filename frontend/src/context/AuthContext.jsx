@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import {
   createContext,
   useContext,
@@ -9,27 +8,35 @@ import {
 } from "react";
 import * as authService from "../services/authService";
 
-
 export const AuthContext = createContext(null);
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
-// Turn an Axios error into a friendly Error the forms can show.
 function toError(err, fallback) {
   const data = err?.response?.data;
-  const error = new Error(data?.error || data?.message || err?.message || fallback);
-  error.fields = data?.errors ?? null; // field-level errors, if Flask sends them
+  const error = new Error(
+    data?.error || data?.message || err?.message || fallback,
+  );
+  error.fields = data?.errors ?? null;
   return error;
 }
 
 const extractUser = (data) => data?.user ?? data ?? null;
 
+const PUBLIC_PATHS = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+];
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  // true until we know whether a session already exists
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(
+    () => !PUBLIC_PATHS.includes(window.location.pathname),
+  );
 
   const refreshUser = useCallback(async () => {
     try {
@@ -38,14 +45,17 @@ export function AuthProvider({ children }) {
       setUser(current);
       return current;
     } catch {
-      setUser(null); // 401 = not logged in, which is normal
+      setUser(null);
       return null;
     }
   }, []);
 
-
-  // On first load, ask Flask whether the session cookie is still valid.
   useEffect(() => {
+    if (PUBLIC_PATHS.includes(window.location.pathname)) {
+      setLoading(false);
+      return;
+    }
+
     let ignore = false;
     authService
       .getCurrentUser()
@@ -81,17 +91,17 @@ export function AuthProvider({ children }) {
       } catch (err) {
         throw toError(err, "Could not create your account. Please try again.");
       }
-      // Works whether or not Flask logs the user in after registering.
+
       return refreshUser();
     },
-    [refreshUser]
+    [refreshUser],
   );
 
   const logout = useCallback(async () => {
     try {
       await authService.logout();
     } finally {
-      setUser(null); // clear the UI even if the request fails
+      setUser(null);
     }
   }, []);
 
@@ -105,7 +115,7 @@ export function AuthProvider({ children }) {
       logout,
       refreshUser,
     }),
-    [user, loading, login, register, logout, refreshUser]
+    [user, loading, login, register, logout, refreshUser],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

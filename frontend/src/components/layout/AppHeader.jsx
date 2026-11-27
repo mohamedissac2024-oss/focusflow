@@ -29,11 +29,14 @@ export default function AppHeader({ children, bottomSpace = 56 }) {
   return (
     
     <header style={{ background: "#111", color: "white" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", minHeight: 56, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 24px", minHeight: 88, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 32, flexWrap: "wrap" }}>
-          <Link to="/dashboard" style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: "bold", fontSize: 14, color: "white", textDecoration: "none" }}>
-            <span style={{ width: 10, height: 10, background: "#C6F24E", display: "inline-block" }} />
-            FocusFlow
+          <Link to="/dashboard" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
+            <img
+              src="/Focus%20flow.jpg.jpeg?v=3"
+              alt="FocusFlow"
+              style={{ height: 76, width: "auto", objectFit: "contain", mixBlendMode: "lighten" }}
+            />
           </Link>
           <nav style={{ display: "flex", gap: 24, fontSize: 13, flexWrap: "wrap" }}>
             {LINKS.map((l) => {
